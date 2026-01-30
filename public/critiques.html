@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>critiques</title>
+    <meta charset="utf-8">
+  <link rel="stylesheet" href="style/stile.css">
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="script/scriptCritique.js"></script>
+</head>
+<body id="body2">
+
+
+  
+   <nav>
+        <div class="logo">FK</div>
+              <input type="checkbox" id="menu-toggle">
+              <label for="menu-toggle" class="menu-icon">&#9776;</label>
+        <ul class="menu">
+            <li><a href="index.html">Accueil</a></li>
+             <li class="dropdown">
+
+            <input type="checkbox" id="menu-toggle2">
+           <label for="menu-toggle2" class="dropdown-label">Découvrir  &#9662;</label>
+        <ul class="submenu">
+            <li><a href="Quiz.html">Quiz</a></li>
+            <li><a href="citations.html">Citations</a></li>
+            <li class="current"><a href="critiques.html">Critiques</a></li>
+        </ul>
+    </li>
+            <li><a href="personnages.html">Personnages</a></li>
+            <li><a href="Mon-roman.html">Mon roman</a></li>
+            <li><a id="link-connexion" href="connexion.html">Connexion</a></li>
+            <li><a href="#" id="logout-link" style="display:none;">Déconnexion</a></li>
+        </ul>
+    </nav>
+
+
+     
+   
+<div class="conteniteur_chart">
+    <div class="conteniteur_H1">
+       <h1>Critiques des lecteurs</h1>
+    </div>
+
+ <div class="note-global">
+  <div class="avi">
+    <div class="moyenne">3,4</div>
+    <div class="etoiles">★★★☆☆</div>
+    <div class="votes">sur 126 avis</div>
+  </div>
+<div id="chart_div"></div>
+</div>
+
+
+ <main id="main-critiques">
+    <div id="critiques-container" class="critiques-container"></div>
+
+    <form id="new-critique">
+      <textarea id="critique-text" placeholder="Écris ta critique ici..."></textarea>
+      <button id="add-critique">Ajouter une critique</button>
+    </form>
+  </main>
+ </div>
+
+
+
+
+ <footer>
+        <p>&copy; 2025 Mon premier amour - l'histoire derrière le roman.</p>
+        <div class="social-icons">
+            <a href="#"><img src="style/immagini/social/facebook.png" alt="Facebook"></a>
+            <a href="#"><img src="style/immagini/social/instagram.png" alt="Instagram"></a>
+            <a href="#"><img src="style/immagini/social/twitterx.png" alt="TwitterX"></a>
+        </div>
+    </footer> 
+</body>
+</html> 

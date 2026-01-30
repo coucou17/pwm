@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Citations qui m'inspirent</title>
+  <link rel="stylesheet" href="style/stile.css">
+ <script src="https://www.gstatic.com/charts/loader.js"></script>
+ <script src="script/scriptCitation.js" defer></script>
+</head>
+<body id="body3">
+
+
+
+   <nav>
+        <div class="logo">FK</div>
+              <input type="checkbox" id="menu-toggle">
+              <label for="menu-toggle" class="menu-icon">&#9776;</label>
+        <ul class="menu">
+            <li><a href="index.html">Accueil</a></li>
+             <li class="dropdown">
+
+            <input type="checkbox" id="menu-toggle2">
+           <label for="menu-toggle2" class="dropdown-label">Découvrir  &#9662;</label>
+        <ul class="submenu">
+            <li><a href="Quiz.html">Quiz</a></li>
+            <li class="current"><a href="citations.html">Citations</a></li>
+            <li><a href="critiques.html">Critiques</a></li>
+        </ul>
+    </li>
+            <li><a href="personnages.html">Personnages</a></li>
+            <li><a href="Mon-roman.html">Mon roman</a></li>
+            <li><a id="link-connexion" href="connexion.html">Connexion</a></li>
+            <li><a href="#" id="logout-link" style="display:none;">Déconnexion</a></li>
+        </ul>
+    </nav>
+
+
+
+
+
+
+ <div class="page-layout">
+    <!-- CONTENU PRINCIPAL -->
+    <main class="main-content">
+
+  <div id="head-citation">
+    <h1 id="h1-citation">Citation du jour</h1>
+    <p id="elementAleatoire"></p>
+  </div>
+
+   
+  <section id="filters">
+    <h2>Filtrer par thème</h2>
+       <!-- zone thèmes (boutons créés dynamiquement) -->
+    <div id="citations-themes" class="citations-themes"></div>
+  </section>
+
+
+ <section id="gallery">
+   <h2>Galerie de citations</h2>
+     <!-- zone galerie -->
+ <main id="citationsContainer" class="citations-container" aria-live="polite"></main>
+ </section>
+
+
+
+  <section id="tableau-populaires">
+    <h2>Top des citations les plus aimées</h2>
+<table id="topCitationsTable" border="1">
+  <thead>
+    <tr>
+      <th>Thème</th>
+      <th>Texte</th>
+      <th>Likes</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+  </section>
+
+
+  <section id="graphique">
+     <div id="piechart"></div>
+  </section>
+
+    <div class="cta-proposer">
+      <a href="formulaire-citation.html" class="btn">Proposer une citation</a>
+    </div>
+  </main>
+
+
+    <!-- SIDEBAR À DROITE -->
+    <aside class="sidebar">
+      <h2>Découvrir d’autres</h2>
+      <ul>
+        <li><a href="Quiz.html">🧠 Quiz littéraires</a></li>
+        <li><a href="critiques.html">📝 Critiques de lecteurs</a></li>
+        <li><a href="personnages.html">👥 Personnages</a></li>
+        <li><a href="mon-roman.html">📖 Mon roman</a></li>
+      </ul>
+
+      <div id="citation-du-jour">
+        <h3>Citations qui m’inspirent</h3>
+        <p class="subtile">Des mots pour éveiller l’âme.</p>
+      </div>
+
+      <div class="social-links">
+        <h3>Suivez-moi</h3>
+     <div class="social-icons">
+            <a href="#"><img src="style/immagini/social/facebook.png" alt="Facebook"></a>
+            <a href="#"><img src="style/immagini/social/instagram.png" alt="Instagram"></a>
+            <a href="#"><img src="style/immagini/social/twitterx.png" alt="TwitterX"></a>
+        </div> </aside>
+
+  </div>
+
+
+
+ <footer>
+        <p>&copy; 2025 Mon premier amour - l'histoire derrière le roman.</p>
+        <div class="social-icons">
+            <a href="#"><img src="style/immagini/social/facebook.png" alt="Facebook"></a>
+            <a href="#"><img src="style/immagini/social/instagram.png" alt="Instagram"></a>
+            <a href="#"><img src="style/immagini/social/twitterx.png" alt="TwitterX"></a>
+        </div>
+    </footer> 
+
+  
+</body>
+</html>
