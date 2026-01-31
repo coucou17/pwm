@@ -6,7 +6,7 @@ const mysql = require("mysql2/promise");
 const nodemailer = require("nodemailer");
 const app = express();
 const PORT = process.env.PORT || 3000;
-// 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
+
 const JWT_SECRET = "coucou";
 const cors = require('cors');
 
