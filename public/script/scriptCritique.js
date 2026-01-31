@@ -1,24 +1,24 @@
-
 document.addEventListener("DOMContentLoaded", async () => {
 
-const paroleVietate= ["dégueulasse", "imbécile", "stupide"];
-
+  const paroleVietate = ["dégueulasse", "imbécile", "stupide"];
+  const BASE_URL = "https://pwm-o9t9.onrender.com"; // Ton URL Render
 
   /* ============================
-   Aggionamento del menu
-============================ */
+     Mise à jour du menu
+  ============================ */
 
-async function getProfile() {
-  try {
-    const resp = await fetch('https://pwm-o9t9.onrender.com', { credentials: "same-origin" });
-    if (!resp.ok) return null;
-    const body = await resp.json();
-    return body.user || null;
-  } catch (e) {
-    console.error("Erreur getProfile:", e);
-    return null;
+  async function getProfile() {
+    try {
+      // Ajout de BASE_URL et "include" pour les cookies
+      const resp = await fetch(`${BASE_URL}/api/profile`, { credentials: "include" });
+      if (!resp.ok) return null;
+      const body = await resp.json();
+      return body.user || null;
+    } catch (e) {
+      console.error("Erreur getProfile:", e);
+      return null;
+    }
   }
-}
 
   const linkConnexion = document.getElementById("link-connexion");
   const btnLogout = document.getElementById("logout-link");
@@ -29,7 +29,7 @@ async function getProfile() {
     if (btnLogout) {
       btnLogout.style.display = "inline-block";
       btnLogout.onclick = async () => {
-        await fetch('https://pwm-o9t9.onrender.com', { method: "POST" });
+        await fetch(`${BASE_URL}/logout`, { method: "POST", credentials: "include" });
         window.location.reload();
       };
     }
@@ -39,77 +39,58 @@ async function getProfile() {
     if (linkConnexion) linkConnexion.style.display = "inline";
   }
 
-
   const protectedPages = ["Quiz.html", "formulaire-citation.html", "critiques.html"];
   const currentPage = window.location.pathname.split("/").pop();
 
-  if (!protectedPages.includes(currentPage)) return ;
-
-  const user3 = await getProfile();
-  if (!user3) {
-    alert("Vous devez être connecté pour accéder à cette page.");
-    window.location.href = "connexion.html";
+  if (protectedPages.includes(currentPage)) {
+    const user3 = await getProfile();
+    if (!user3) {
+      alert("Vous devez être connecté pour accéder à cette page.");
+      window.location.href = "connexion.html";
+      return;
+    }
   }
 
-
-
-
-/*********** chart *************/
+  /*********** chart *************/
 
   google.charts.load("current", { packages: ["corechart"] });
   google.charts.setOnLoadCallback(async () => {
- 
-  if (!document.getElementById("chart_div")) return;
+    if (!document.getElementById("chart_div")) return;
 
-  try {
-    const res = await fetch('https://pwm-o9t9.onrender.com');
-    const etat = await res.json();
-    let positif = etat.positif;
-    let negatif = etat.negatif;
+    try {
+      const res = await fetch(`${BASE_URL}/api/critiques/etat`);
+      const etat = await res.json();
+      let positif = etat.positif;
+      let negatif = etat.negatif;
 
-    // scelta personnale
-    let intermediaire = 2 + (Math.floor(Math.random() * negatif));
-    let excellent = (Math.floor(Math.random() * positif)) + 1;
-    let bien = 5 + (positif + negatif);
+      let intermediaire = 2 + (Math.floor(Math.random() * negatif));
+      let excellent = (Math.floor(Math.random() * positif)) + 1;
+      let bien = 5 + (positif + negatif);
 
-  
-    const data = google.visualization.arrayToDataTable([
-      ["étoile", "avis"],
-      ["5★", excellent],
-      ["4★", bien],
-      ["3★", intermediaire],
-      ["2★", positif],
-      ["1★", negatif]
-    ]);
+      const data = google.visualization.arrayToDataTable([
+        ["étoile", "avis"],
+        ["5★", excellent],
+        ["4★", bien],
+        ["3★", intermediaire],
+        ["2★", positif],
+        ["1★", negatif]
+      ]);
 
-    const options = {
-      title: "CRITIQUES, ANALYSES ET AVIS",
-      chartArea: { width: "50%" },
-      hAxis: { title: "Total avis", minValue: 0 },
-      vAxis: { title: "Catégories" }
-    };
+      const options = {
+        title: "CRITIQUES, ANALYSES ET AVIS",
+        chartArea: { width: "50%" },
+        hAxis: { title: "Total avis", minValue: 0 },
+        vAxis: { title: "Catégories" }
+      };
 
-    const chart = new google.visualization.BarChart(document.getElementById("chart_div"));
-    chart.draw(data, options);
+      const chart = new google.visualization.BarChart(document.getElementById("chart_div"));
+      chart.draw(data, options);
+    } catch (error) {
+      console.error("Erreur drawMultSeries:", error);
+    }
+  });
 
-  } catch (error) {
-    console.error("Erreur drawMultSeries:", error);
-  }
- });
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**************** critique ********************/
+  /**************** critique ********************/
 
   const critiquesContainer = document.getElementById("critiques-container");
   const addCritiqueBtn = document.getElementById("add-critique");
@@ -118,27 +99,18 @@ async function getProfile() {
   if (!critiquesContainer || !addCritiqueBtn || !critiqueText) return;
 
   const user = await getProfile();
-  if (!user) {
-    window.location.href = "connexion.html";
-    return;
-  }
+  if (!user) return; // Déjà géré par la redirection plus haut
 
-  console.log("Utilisateur connecté :", user); //  verifico che user.id esiste
-
-  // recupero i critici da MySQL
   async function fetchCritiques() {
-    const res = await fetch('https://pwm-o9t9.onrender.com');
-    const data = await res.json();
-    return data;
-  }
-
-  // recupero le risposte di una critica
-  async function fetchReponses(critiqueId) {
-    const res = await fetch(`https://pwm-o9t9.onrender.com{critiqueId}/reponses`);
+    const res = await fetch(`${BASE_URL}/api/critiques`);
     return await res.json();
   }
 
-  // stampare la critica
+  async function fetchReponses(critiqueId) {
+    const res = await fetch(`${BASE_URL}/api/critiques/${critiqueId}/reponses`);
+    return await res.json();
+  }
+
   async function renderCritiques() {
     const critiques = await fetchCritiques();
     critiquesContainer.innerHTML = "";
@@ -158,7 +130,6 @@ async function getProfile() {
         </div>
         <div class="reponses" id="reponses-${critique.id}"></div>
       `;
-
       critiquesContainer.appendChild(div);
 
       const reponses = await fetchReponses(critique.id);
@@ -169,36 +140,27 @@ async function getProfile() {
         reponsesDiv.appendChild(repDiv);
       });
 
-      //  Bouton Like
       const likeBtn = div.querySelector(".like-btn");
       likeBtn.addEventListener("click", async () => {
         try {
-          const res = await fetch(`https://pwm-o9t9.onrender.com{critique.id}/like`, {
+          const res = await fetch(`${BASE_URL}/api/critiques/${critique.id}/like`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ utilisateur_id: user.id })
+            body: JSON.stringify({ utilisateur_id: user.id }),
+            credentials: "include"
           });
-
-          if (res.ok) {
-            await renderCritiques();
-          } else {
-            const msg = await res.text();
-            alert(msg);
-          }
+          if (res.ok) await renderCritiques();
+          else alert(await res.text());
         } catch (err) {
           console.error(err);
-          alert("Erreur lors du like");
         }
       });
 
-      // Bouton Répondre
       const replyBtn = div.querySelector(".reply-btn");
       replyBtn.addEventListener("click", () => {
         const replyBox = document.createElement("textarea");
-        replyBox.placeholder = "Écrire une réponse...";
         const sendBtn = document.createElement("button");
         sendBtn.textContent = "Envoyer";
-
         const replyContainer = div.querySelector(".reponses");
         replyContainer.appendChild(replyBox);
         replyContainer.appendChild(sendBtn);
@@ -206,71 +168,44 @@ async function getProfile() {
         sendBtn.addEventListener("click", async () => {
           const texte = replyBox.value.trim();
           if (!texte) return alert("Écris une réponse !");
+          if (paroleVietate.some(p => texte.includes(p))) return alert("Mot interdit !");
 
-        for (let parola of paroleVietate) {
-            if(texte.includes(parola)) {
-                 return alert("Le texte contient un mot interdit. Veuillez le supprimez.");
-            } 
-         }
-   try {
-            const res = await fetch(`https://pwm-o9t9.onrender.com{critique.id}/reponse`, {
+          try {
+            const res = await fetch(`${BASE_URL}/api/critiques/${critique.id}/reponse`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                nom: user.nome,
-                texte,
-                utilisateur_id: user.id
-              })
+              body: JSON.stringify({ nom: user.nome, texte, utilisateur_id: user.id }),
+              credentials: "include"
             });
-
             if (res.ok) {
               alert("Réponse ajoutée ✅");
               await renderCritiques();
-            } else {
-              alert("Erreur lors de l’ajout de la réponse");
             }
-          } catch (err) {
-            console.error(err);
-          }
+          } catch (err) { console.error(err); }
         });
       });
     }
   }
 
-  // --- aggiungere una critica
   addCritiqueBtn.addEventListener("click", async () => {
     const txt = critiqueText.value.trim();
     if (!txt) return alert("Écris quelque chose !");
+    if (paroleVietate.some(p => txt.includes(p))) return alert("Mot interdit !");
 
-        for (let parola of paroleVietate) {
-            if(txt.includes(parola)) {
-                alert("Le texte contient un mot interdit. Veuillez le supprimez.");
-                return;
-            }
-        }
-  try {
-      const res = await fetch('https://pwm-o9t9.onrender.com', {
+    try {
+      const res = await fetch(`${BASE_URL}/api/critiques`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nom: user.nome,
-          texte: txt,
-          utilisateur_id: user.id
-        })
+        body: JSON.stringify({ nom: user.nome, texte: txt, utilisateur_id: user.id }),
+        credentials: "include"
       });
-
       if (res.ok) {
         alert("Critique ajoutée ✅");
         await renderCritiques();
-      } else {
-        alert("Erreur lors de l’ajout");
       }
-
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) { console.error(err); }
   });
 
-  // stampare
   await renderCritiques();
 });
+

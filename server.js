@@ -6,7 +6,7 @@ const mysql = require("mysql2/promise");
 const nodemailer = require("nodemailer");
 const app = express();
 const PORT = process.env.PORT || 3000;
-// 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
+// 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
 const JWT_SECRET = "coucou";
 const cors = require('cors');
 
@@ -88,12 +88,13 @@ app.post("/login", async (req, res) => {
     );
 
     // Inserisce il token in un cookie solo HTTP
-    res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "lax",
-      maxAge: 3600000, // 1 ora
-      secure: false,               // true per HTTPS
-    });
+res.cookie("token", token, {
+  httpOnly: true,
+  sameSite: "none",   // Indispensable pour la communication entre domaines différents
+  maxAge: 3600000, 
+  secure: true,       // Obligatoire pour le HTTPS sur Render
+});
+
 
     return res.json({ authenticated: true, message: "Sei connesso" });
     

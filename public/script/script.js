@@ -1,20 +1,23 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
-  /* ============================
-   Aggionamento del menu
-============================ */
+  const BASE_URL = "https://pwm-o9t9.onrender.com"; // Ton URL Render
 
-async function getProfile() {
-  try {
-    const resp = await fetch('https://pwm-o9t9.onrender.com', { credentials: "same-origin" });
-    if (!resp.ok) return null;
-    const body = await resp.json();
-    return body.user || null;
-  } catch (e) {
-    console.error("Erreur getProfile:", e);
-    return null;
+  /* ============================
+     Mise à jour du menu
+  ============================ */
+
+  async function getProfile() {
+    try {
+      // Correction de l'URL et passage en credentials: "include"
+      const resp = await fetch(`${BASE_URL}/api/profile`, { credentials: "include" });
+      if (!resp.ok) return null;
+      const body = await resp.json();
+      return body.user || null;
+    } catch (e) {
+      console.error("Erreur getProfile:", e);
+      return null;
+    }
   }
-}
 
   const linkConnexion = document.getElementById("link-connexion");
   const btnLogout = document.getElementById("logout-link");
@@ -25,7 +28,8 @@ async function getProfile() {
     if (btnLogout) {
       btnLogout.style.display = "inline-block";
       btnLogout.onclick = async () => {
-        await fetch('https://pwm-o9t9.onrender.com', { method: "POST" });
+        // Ajout du chemin /logout
+        await fetch(`${BASE_URL}/logout`, { method: "POST", credentials: "include" });
         window.location.reload();
       };
     }
@@ -35,56 +39,55 @@ async function getProfile() {
     if (linkConnexion) linkConnexion.style.display = "inline";
   }
 
-
   const protectedPages = ["Quiz.html", "formulaire-citation.html", "critiques.html"];
   const currentPage = window.location.pathname.split("/").pop();
 
-  if (!protectedPages.includes(currentPage)) return ;
-
-  const user3 = await getProfile();
-  if (!user3) {
-    alert("Vous devez être connecté pour accéder à cette page.");
-    window.location.href = "connexion.html";
+  if (protectedPages.includes(currentPage)) {
+    const user3 = await getProfile();
+    if (!user3) {
+      alert("Vous devez être connecté pour accéder à cette page.");
+      window.location.href = "connexion.html";
+      return;
+    }
   }
 
+  /* ============================
+     Envoi de la citation
+  ============================ */
 
+  const send = document.getElementById("citationForm");
+  if (send) {
+    send.addEventListener("submit", async function(e) {
+      e.preventDefault();
 
+      const data = {
+        nom: document.getElementById("nom").value,
+        citation: document.getElementById("citation-plus").value,
+        auteur: document.getElementById("auteur").value,
+        theme: document.getElementById("theme").value
+      };
 
-/* ============================
-   1. script
-============================ */
+      try {
+        // Ajout du chemin /send-citation correspondant à ton server.js
+        const res = await fetch(`${BASE_URL}/send-citation`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
 
+        const result = await res.json();
+        alert(result.message);
 
-const send = document.getElementById("citationForm")
-send.addEventListener("submit", async function(e) {
-  e.preventDefault();
-
-  const data = {
-    nom: document.getElementById("nom").value,
-    citation: document.getElementById("citation-plus").value,
-    auteur: document.getElementById("auteur").value,
-    theme: document.getElementById("theme").value
-  };
-
-  try {
-    const res = await fetch('https://pwm-o9t9.onrender.com', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+        this.style.display = "none";
+        document.getElementById("confirmation").classList.remove("hidden");
+      } catch (err) {
+        alert("Erreur lors de l’envoi de la citation 😢");
+        console.error(err);
+      }
     });
-
-    const result = await res.json();
-    alert(result.message);
-
-    this.style.display = "none";
-    document.getElementById("confirmation").classList.remove("hidden");
-  } catch (err) {
-    alert("Erreur lors de l’envoi de la citation 😢");
-    console.error(err);
   }
 });
-  
-});
+
 
 
 
