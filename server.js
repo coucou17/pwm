@@ -8,6 +8,14 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 // 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
 const JWT_SECRET = "coucou";
+const cors = require('cors');
+
+// Place cette ligne AVANT tes routes app.post et app.get
+app.use(cors({
+  origin: 'https://697d568972d00e20577862b0--celadon-jalebi-bdc3ba.netlify.app', 
+  credentials: true
+}));
+
 
 app.use(express.json());
 app.use(cookieParser());
