@@ -388,6 +388,11 @@ app.post("/api/citations/like", isAuthenticated, async (req, res) => {
   }
 });
 
+app.get("/citation.html", isAuthenticated, (req, res) => {
+    res.sendFile(__dirname + "/public/citation.html");
+});
+
+
 // recupero la somma dei like per tema
 app.get("/api/citations/likes-by-theme", async (req, res) => {
   try {
