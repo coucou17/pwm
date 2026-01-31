@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function getProfile() {
   try {
-    const resp = await fetch("/api/profile", { credentials: "same-origin" });
+    const resp = await fetch('https://pwm-o9t9.onrender.com', { credentials: "same-origin" });
     if (!resp.ok) return null;
     const body = await resp.json();
     return body.user || null;
@@ -25,7 +25,7 @@ async function getProfile() {
     if (btnLogout) {
       btnLogout.style.display = "inline-block";
       btnLogout.onclick = async () => {
-        await fetch("/logout", { method: "POST" });
+        await fetch('https://pwm-o9t9.onrender.com', { method: "POST" });
         window.location.reload();
       };
     }
@@ -67,7 +67,7 @@ send.addEventListener("submit", async function(e) {
   };
 
   try {
-    const res = await fetch("/send-citation", {
+    const res = await fetch('https://pwm-o9t9.onrender.com', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)

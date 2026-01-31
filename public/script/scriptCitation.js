@@ -11,7 +11,7 @@ await initCharts();
 ============================ */
 async function getProfile() {
   try {
-    const resp = await fetch("/api/profile", { credentials: "same-origin" });
+    const resp = await fetch('https://pwm-o9t9.onrender.com', { credentials: "same-origin" });
     if (!resp.ok) return null;
     const body = await resp.json();
     return body.user || null;
@@ -34,7 +34,7 @@ async function initAuthMenu() {
     if (btnLogout) {
       btnLogout.style.display = "inline-block";
       btnLogout.onclick = async () => {
-        await fetch("/logout", { method: "POST" });
+        await fetch('https://pwm-o9t9.onrender.com', { method: "POST" });
         window.location.reload();
       };
     }
@@ -68,7 +68,7 @@ async function initCitations() {
   if (!container) return;
 
   //  Scarica MySQL
-  const resp = await fetch("/api/citations");
+  const resp = await fetch('https://pwm-o9t9.onrender.com');
   const citations = await resp.json();
 
   //  Citazione casuale
@@ -133,7 +133,7 @@ async function initCitations() {
       likeBtn.addEventListener("click", async () => {
         if (!userId) return alert("Connecte-toi pour liker !");
         try {
-          const res = await fetch("/api/citations/like", {
+          const res = await fetch('https://pwm-o9t9.onrender.com', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ citation_id: c.id }),
@@ -172,7 +172,7 @@ async function initCitations() {
   async function renderTopCitations() {
     const tableBody = document.querySelector("#topCitationsTable tbody");
     if (!tableBody) return;
-    const resp = await fetch("/api/citations");
+    const resp = await fetch('https://pwm-o9t9.onrender.com');
     const data = await resp.json();
     data.sort((a, b) => b.likes - a.likes);
     tableBody.innerHTML = "";
@@ -202,7 +202,7 @@ async function initCitations() {
 // Recupero i like per tema dal database
 async function getLikesByTheme() {
   try {
-    const res = await fetch("/api/citations/likes-by-theme");
+    const res = await fetch('https://pwm-o9t9.onrender.com');
     if (!res.ok) throw new Error("Erreur réseau");
     const rows = await res.json();
 

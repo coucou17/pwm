@@ -13,7 +13,7 @@ if (connexionButton) {
         const email = document.getElementById("email").value;
 
         try {
-            const response = await fetch("/login", {
+            const response = await fetch('https://pwm-o9t9.onrender.com', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ nome, email })
@@ -48,7 +48,7 @@ const button = document.getElementById("register-button");
         const nome = document.getElementById("register-nome").value;
 
         try {
-            const response = await fetch("/register", {
+            const response = await fetch('https://pwm-o9t9.onrender.com', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ nome, email })

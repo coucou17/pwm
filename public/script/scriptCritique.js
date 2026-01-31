@@ -10,7 +10,7 @@ const paroleVietate= ["dégueulasse", "imbécile", "stupide"];
 
 async function getProfile() {
   try {
-    const resp = await fetch("/api/profile", { credentials: "same-origin" });
+    const resp = await fetch('https://pwm-o9t9.onrender.com', { credentials: "same-origin" });
     if (!resp.ok) return null;
     const body = await resp.json();
     return body.user || null;
@@ -29,7 +29,7 @@ async function getProfile() {
     if (btnLogout) {
       btnLogout.style.display = "inline-block";
       btnLogout.onclick = async () => {
-        await fetch("/logout", { method: "POST" });
+        await fetch('https://pwm-o9t9.onrender.com', { method: "POST" });
         window.location.reload();
       };
     }
@@ -62,7 +62,7 @@ async function getProfile() {
   if (!document.getElementById("chart_div")) return;
 
   try {
-    const res = await fetch("/api/critiques/etat");
+    const res = await fetch('https://pwm-o9t9.onrender.com');
     const etat = await res.json();
     let positif = etat.positif;
     let negatif = etat.negatif;
@@ -127,14 +127,14 @@ async function getProfile() {
 
   // recupero i critici da MySQL
   async function fetchCritiques() {
-    const res = await fetch("/api/critiques");
+    const res = await fetch('https://pwm-o9t9.onrender.com');
     const data = await res.json();
     return data;
   }
 
   // recupero le risposte di una critica
   async function fetchReponses(critiqueId) {
-    const res = await fetch(`/api/critiques/${critiqueId}/reponses`);
+    const res = await fetch(`https://pwm-o9t9.onrender.com{critiqueId}/reponses`);
     return await res.json();
   }
 
@@ -173,7 +173,7 @@ async function getProfile() {
       const likeBtn = div.querySelector(".like-btn");
       likeBtn.addEventListener("click", async () => {
         try {
-          const res = await fetch(`/api/critiques/${critique.id}/like`, {
+          const res = await fetch(`https://pwm-o9t9.onrender.com{critique.id}/like`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ utilisateur_id: user.id })
@@ -213,7 +213,7 @@ async function getProfile() {
             } 
          }
    try {
-            const res = await fetch(`/api/critiques/${critique.id}/reponse`, {
+            const res = await fetch(`https://pwm-o9t9.onrender.com{critique.id}/reponse`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -249,7 +249,7 @@ async function getProfile() {
             }
         }
   try {
-      const res = await fetch("/api/critiques", {
+      const res = await fetch('https://pwm-o9t9.onrender.com', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

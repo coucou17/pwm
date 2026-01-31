@@ -6,7 +6,7 @@ window.onload = function(){
 ============================ */
     async function getProfile() {
   try {
-    const resp = await fetch("/api/profile", { credentials: "same-origin" });
+    const resp = await fetch('https://pwm-o9t9.onrender.com', { credentials: "same-origin" });
     if (!resp.ok) return null;
     const body = await resp.json();
     return body.user || null;
@@ -27,7 +27,7 @@ window.onload = function(){
     if (btnLogout) {
       btnLogout.style.display = "inline-block";
       btnLogout.onclick = async () => {
-        await fetch("/logout", { method: "POST" });
+        await fetch('https://pwm-o9t9.onrender.com', { method: "POST" });
         window.location.reload();
       };
     }
